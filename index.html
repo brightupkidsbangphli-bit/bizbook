@@ -259,7 +259,7 @@ body:has(#updBar){padding-top:44px}
 <div class="ov" id="ov"><div class="modal" id="modal"></div></div>
 <div class="toast" id="toast"></div>
 
-<script>window.BB_MOBILE_VER="1.0.1"</script>
+<script>window.BB_MOBILE_VER="1.0.2"</script>
 <script src="exceljs.min.js" defer></script>
 <script>
 /* BizBook มือถือ — เก็บข้อมูลในไฟล์เดียวกับโปรแกรมบนคอม ผ่าน Google Drive
@@ -267,6 +267,7 @@ body:has(#updBar){padding-top:44px}
 (function(){
 const SCOPE='https://www.googleapis.com/auth/drive';
 const LS={get:k=>{try{return localStorage.getItem('bbm_'+k)}catch(e){return null}},set:(k,v)=>{try{v==null?localStorage.removeItem('bbm_'+k):localStorage.setItem('bbm_'+k,v)}catch(e){}}};
+if(!LS.get('cid'))LS.set('cid','850611294724-7nd6b50dd85tuut6f6g1et6krl27126m.apps.googleusercontent.com');
 /* ---- IndexedDB ---- */
 let dbp;function idb(){return dbp||(dbp=new Promise((ok,no)=>{const r=indexedDB.open('bizbook-m',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}))}
 async function iget(k){const d=await idb();return new Promise(ok=>{const q=d.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>ok(q.result==null?null:q.result);q.onerror=()=>ok(null)})}
