@@ -1,0 +1,7 @@
+const C='bizbook-m-1.0.1';const F=["./", "index.html", "fonts.css", "exceljs.min.js", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-180.png", "fonts/prompt-thai-600-normal.woff2", "fonts/sarabun-thai-400-normal.woff2", "fonts/sarabun-latin-700-normal.woff2", "fonts/sarabun-latin-500-normal.woff2", "fonts/prompt-latin-500-normal.woff2", "fonts/sarabun-thai-600-normal.woff2", "fonts/sarabun-latin-400-normal.woff2", "fonts/sarabun-latin-600-normal.woff2", "fonts/sarabun-thai-700-normal.woff2", "fonts/prompt-thai-500-normal.woff2", "fonts/prompt-latin-600-normal.woff2", "fonts/sarabun-thai-500-normal.woff2"];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(F)).then(()=>self.skipWaiting()))});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
+self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==location.origin)return;
+ /* หน้าแอป: ใช้ของใหม่จากเน็ตก่อน ถ้าไม่มีเน็ตใช้ที่เก็บไว้ */
+ if(e.request.mode==='navigate'||u.pathname.endsWith('/index.html')){e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(C).then(x=>x.put('index.html',c));return r}).catch(()=>caches.match('index.html')));return}
+ e.respondWith(caches.match(e.request,{ignoreSearch:true}).then(r=>r||fetch(e.request)))});
